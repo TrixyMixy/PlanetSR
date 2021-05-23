@@ -120,13 +120,20 @@ void simulate(){
   if(tstep<dt)tstep+=elT;
   eT=sT;
 }
+void error_callback(int error, const char* description)
+{
+    fprintf(stderr, "Error: %s\n", description);
+}
 int main() {
+  glfwSetErrorCallback(error_callback);
   if (!glfwInit()){
-    throw "ERROR: GLFW Failed.";
+    cout<<"ERROR: GLFW Failed.";
+    return -1;
   } else {
     GLFWwindow* simview = glfwCreateWindow(640, 480, "PlanetSR PRE-ALPHA", NULL, NULL);
     if (!simview){
-      throw "ERROR: Window failed to load."; // Window or OpenGL context creation failed
+      cout<<"ERROR: Window failed to load."; // Window or OpenGL context creation failed
+      return -1;
     }
     glfwMakeContextCurrent(simview);
     entities.push_back(entity(vect(3,0,0),10,1e10));
